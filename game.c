@@ -113,10 +113,13 @@ int main(){
 	bufferDrawLine(bidang[4], bidang[6], c);
 	bufferDrawLine(bidang[0], bidang[7], c);
 	loadBuffer();
+
+	//printLines();
+	
 	prepareView();
 	usleep(1500000);
 	loadView();
-
+	return 0;
 
 //**game-loop***********************************************************************************
 	pthread_create(&thread0, NULL, preUpdate, NULL);

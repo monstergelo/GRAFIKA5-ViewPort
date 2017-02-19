@@ -313,22 +313,24 @@ void bufferDrawLine(titik p0, titik p1, warna c) {
       if (e2 < dy) { err += dx; y0 += sy; }
     }
 
-    saveLine(&p0, &p1, c);
+    saveLine(p0, p1, c);
 }
 
-void saveLine(titik* p0, titik* p1, warna c)
+void saveLine(titik p0, titik p1, warna c)
 {
     for(int i; i<lastLine; i++)
     {
-        if((worldLine[i].p0 == p0) && (worldLine[i].p1 == p1))
+        if((worldLines[i].p0.x == p0.x) && (worldLines[i].p0.y == p0.y) && 
+           (worldLines[i].p1.x == p1.x) && (worldLines[i].p1.y == p1.y))
         {
             return;
         }
     }
 
-    worldLine[lastLine].p0 = p0;
-    worldLine[lastLine].p1 = p1;
-    worldLine[lastLine].c = c;
+    worldLines[lastLine].p0 = p0;
+    worldLines[lastLine].p1 = p1;
+    worldLines[lastLine].c = c;
+    lastLine++;
 }
 
 void bufferDrawPlaneSolidCitra(titik *citra, titik pivot, warna c, warna bound_c, int sisi) {
@@ -415,4 +417,14 @@ void shift_window(int x, int y)
 {
     window.length_x += x;
     window.length_y += y;
+}
+
+void printLines()
+{
+    for(int ii = 0; ii<5; ii++)
+    {
+        printf("Line %d: [%d,%d] [%d,%d]\n", 
+            ii, worldLines[ii].p0.x, worldLines[ii].p0.y, 
+                worldLines[ii].p1.x, worldLines[ii].p1.y);
+    }
 }

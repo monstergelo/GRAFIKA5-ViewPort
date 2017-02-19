@@ -18,7 +18,7 @@ unsigned char viewport_b[4000][4000];
 unsigned char viewport_a[4000][4000];
 
 line worldLines[100];
-int lastLine = 0;
+int lastLine;
 
 selectedBuffer view;
 selectedBuffer window;
@@ -59,7 +59,7 @@ void bufferDrawCircle(titik p, int radius, warna c);	//membuat lingkaran dengan 
 int  dotDistance(titik p1, titik p2);		//mengembalikan jarak antara p1 dan p2
 //================================================
 
-void saveLine(titik* p0, titik* p1, warna c); //menambahkan garis ke worldLine
+void saveLine(titik p0, titik p1, warna c); //menambahkan garis ke worldLine
 
 // membuat pesawat dengan xof sebagai ofside kiri, yof sebagai ofset atas
 void drawPlane(int xof, int yof);
@@ -88,6 +88,7 @@ void init_window(titik p, int length_x, int length_y);
 //menggeser titik origin window
 void shift_window(int x, int y);
 
+void printLines();
 
 
 #endif //GAMBAR_H

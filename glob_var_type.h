@@ -14,8 +14,8 @@ typedef struct{
 } titik;
 
 typedef struct{
-	titik* p0;
-	titik* p1;
+	titik p0;
+	titik p1;
 	warna c;
 } line;
 
@@ -29,7 +29,6 @@ extern selectedBuffer view;
 extern selectedBuffer window;
 
 extern line worldLines[100];
-extern int lastLine;
 
 extern unsigned char buffer_r[4000][4000];
 extern unsigned char buffer_g[4000][4000];
