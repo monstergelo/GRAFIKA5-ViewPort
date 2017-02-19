@@ -40,9 +40,9 @@ extern unsigned char viewport_g[4000][4000];
 extern unsigned char viewport_b[4000][4000];
 extern unsigned char viewport_a[4000][4000];
 
-extern unsigned char window_r[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-extern unsigned char window_g[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-extern unsigned char window_b[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-extern unsigned char window_a[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
+extern unsigned char window_r[4000][4000];
+extern unsigned char window_g[4000][4000];
+extern unsigned char window_b[4000][4000];
+extern unsigned char window_a[4000][4000];
 
 #endif //GLOB_VAR_TYPE_H

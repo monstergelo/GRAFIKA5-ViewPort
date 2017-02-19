@@ -17,6 +17,12 @@ unsigned char viewport_g[4000][4000];
 unsigned char viewport_b[4000][4000];
 unsigned char viewport_a[4000][4000];
 
+unsigned char window_r[4000][4000];
+unsigned char window_g[4000][4000];
+unsigned char window_b[4000][4000];
+unsigned char window_a[4000][4000];
+
+
 line worldLines[100];
 int lastLine;
 
@@ -74,11 +80,20 @@ titik getMidPoint(titik *citra, int sisi);
 //inisialisasi atribut view
 void init_view(titik p, int length_x, int length_y);
 
+//menetralkan warna view
+void refreshView();
+
 //mengkopi buffer ke view sesuai atribut view dan window
 void prepareView();
 
 //me-load view ke layar
 void loadView();
+
+double getViewScaling(int wHeight, int wWidth, int vHeight, int vWidth);
+
+double getViewScalingX(int wWidth, int vWidth);
+
+double getViewScalingY(int wHeight, int vHeight);
 
 //window-stuff==================================================================
 
@@ -88,6 +103,8 @@ void init_window(titik p, int length_x, int length_y);
 //menggeser titik origin window
 void shift_window(int x, int y);
 
+//mengubah ukuran window
+void stretch_window(int x, int y);
 //worldLines-stuff==============================================================
 
 //print WorldLine 0 - i
@@ -95,6 +112,8 @@ void printLines(int i);
 
 //scale garis di WorldLines sebesar s
 void resizeLines(titik p0, float s);
+void resizeLinesX(titik p0, float s);
+void resizeLinesY(titik p0, float s);
 
 //drawLinebuffer seluruh WorldLines
 void redrawLines();
@@ -103,7 +122,12 @@ void redrawLines();
 //setiap p1 sehingga jarak membesar sebanyak skala
 titik scaleDot(titik p0, titik p1, float s); 
 
+titik scaleYDot(titik p0, titik p1, float s);
+
+titik scaleXDot(titik p0, titik p1, float s);
+
 //menjauhkan jarak p0 dan setiap p1 dengan menggeser 
 //setiap p1 sehingga jarak membesar sebanyak skala
 void scaleBanyakDot(titik p0, titik *p1, float s, int banyaktitik); 
+
 #endif //GAMBAR_H

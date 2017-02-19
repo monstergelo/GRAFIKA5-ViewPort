@@ -382,18 +382,120 @@ void init_view(titik p, int length_x, int length_y)
     view.length_y = length_y;
 }
 
+void refreshView()
+{
+    titik p0 = {0,0};
+    titik p1 = {4000,4000};
+
+    warna warna_default = {25, 25, 255, 255};
+
+    //
+    //       *1
+    // *0
+    //
+    int i, j;
+    if(p0.x < p1.x && p0.y < p1.y){
+        for(i = p0.x; i < p1.x; i++)
+            for(j = p0.y; j < p1.y; j++){
+                viewport_r[i][j] = warna_default.r;
+                viewport_g[i][j] = warna_default.g;
+                viewport_b[i][j] = warna_default.b;
+                viewport_a[i][j] = warna_default.a;
+            }
+
+        return;
+    }
+
+
+    //
+    // *1
+    //       *0
+    //
+    if(p0.x > p1.x && p0.y < p1.y){
+        for(i = p1.x; i < p0.x; i++)
+            for(j = p0.y; j < p1.y; j++){
+                viewport_r[i][j] = warna_default.r;
+                viewport_g[i][j] = warna_default.g;
+                viewport_b[i][j] = warna_default.b;
+                viewport_a[i][j] = warna_default.a;
+            }
+
+        return;
+    }
+
+    //
+    //       *0
+    // *1
+    //
+    if(p0.x > p1.x && p0.y > p1.y){
+        for(i = p1.x; i < p0.x; i++)
+            for(j = p1.y; j < p0.y; j++){
+                viewport_r[i][j] = warna_default.r;
+                viewport_g[i][j] = warna_default.g;
+                viewport_b[i][j] = warna_default.b;
+                viewport_a[i][j] = warna_default.a;
+            }
+
+        return;
+    }
+
+    //
+    // *0
+    //       *1
+    //
+    if(p0.x < p1.x && p0.y > p1.y){
+        for(i = p0.x; i < p1.x; i++)
+            for(j = p1.y; j < p0.y; j++){
+                viewport_r[i][j] = warna_default.r;
+                viewport_g[i][j] = warna_default.g;
+                viewport_b[i][j] = warna_default.b;
+                viewport_a[i][j] = warna_default.a;
+            }
+
+        return;
+    }
+}
+
 void prepareView()
 {
+    for(int j=0; j<4000; j++)
+    {
+        for(int i=0; i<4000; i++)
+        {
+            window_r[i][j] = buffer_r[i][j];
+            window_g[i][j] = buffer_g[i][j];
+            window_b[i][j] = buffer_b[i][j];
+            window_a[i][j] = buffer_a[i][j];
+        }
+    }
+
+    refreshView();
+    //resize view
+    float scalex = getViewScalingX(window.length_x, view.length_x);
+    float scaley = getViewScalingY(window.length_y, view.length_y);
+    titik p0 = {0,0};
+    // titik p1 = {1366,700};
+
+    printf("a\n");
+    // resizeLines(p0, 2);
+    // printf("scale %f, %f\n", scalex, scaley);
+    resizeLinesX(p0, scalex);
+    resizeLinesY(p0, scaley);
+
+    redrawLines();
+    // printf("awawaw\n");
+
     //pindahin semua pixel yang ada di window ke view
-    int wx = window.origin.x; //koordinat x kiri-atas window
-    int wy = window.origin.y; //koordinat x kiri-atas window
+    int wx = window.origin.x * scalex; //koordinat x kiri-atas window
+    int wy = window.origin.y * scaley; //koordinat x kiri-atas window
 
     int vx = view.origin.x;
     int vy = view.origin.y;
 
-    for(int j=0; j<(window.length_y); j++)
+
+    for(int j=0; j<(view.length_y); j++)
     {
-        for(int i=0; i<(window.length_x); i++)
+        for(int i=0; i<(view.length_x); i++)
         {
             viewport_r[vx+i][vy+j] = buffer_r[wx+i][wy+j];
             viewport_g[vx+i][vy+j] = buffer_g[wx+i][wy+j];
@@ -402,9 +504,21 @@ void prepareView()
         }
     }
 
-    //resize view
 
-    //atur view biar pas posisi
+    //kembalikan buffer
+    resizeLinesX(p0, 1/scalex);
+    resizeLinesY(p0, 1/scaley);
+
+    for(int j=0; j<4000; j++)
+    {
+        for(int i=0; i<4000; i++)
+        {
+            buffer_r[i][j] = window_r[i][j];
+            buffer_g[i][j] = window_g[i][j];
+            buffer_b[i][j] = window_b[i][j];
+            buffer_a[i][j] = window_a[i][j];
+        }
+    }
 }
 
 void loadView()
@@ -445,10 +559,16 @@ void init_window(titik p, int length_x, int length_y)
 
 void shift_window(int x, int y)
 {
+    window.origin.x += x;
+    window.origin.y += y;
+}
+
+void stretch_window(int x, int y)
+{
     window.length_x += x;
     window.length_y += y;
 }
-
+//lines-stuff===================================================================
 void printLines(int i)
 {
     for(int ii = 0; ii<i; ii++)
@@ -463,12 +583,88 @@ void resizeLines(titik p0, float s)
 {
     for(int i=0; i<lastLine; i++)
     {
+        worldLines[i].p0 = scaleDot(p0, worldLines[i].p0, s);
+        worldLines[i].p1 = scaleDot(p0, worldLines[i].p1, s);
+    }
+}
 
+void resizeLinesX(titik p0, float s)
+{
+    for(int i=0; i<lastLine; i++)
+    {
+        worldLines[i].p0 = scaleXDot(p0, worldLines[i].p0, s);
+        worldLines[i].p1 = scaleXDot(p0, worldLines[i].p1, s);
+    }
+}
+
+void resizeLinesY(titik p0, float s)
+{
+    for(int i=0; i<lastLine; i++)
+    {
+        worldLines[i].p0 = scaleYDot(p0, worldLines[i].p0, s);
+        worldLines[i].p1 = scaleYDot(p0, worldLines[i].p1, s);
     }
 }
 
 void redrawLines()
 {
-
+    for(int i=0; i<lastLine; i++)
+    {
+        bufferDrawLine(worldLines[i].p0, worldLines[i].p1, worldLines[i].c);
+    }
 }
 
+double getViewScaling(int wHeight, int wWidth, int vHeight, int vWidth)
+{
+    int factor = vHeight < vWidth ? vHeight : vWidth;
+    if (factor == vHeight) {
+                return (double) wHeight / vHeight;
+    } else {
+            return (double) wWidth / vWidth;
+    }
+}
+
+double getViewScalingX(int wWidth, int vWidth)
+{
+    return (double) vWidth / wWidth;
+}
+
+double getViewScalingY(int wHeight, int vHeight)
+{
+    return (double) vHeight / wHeight;
+}
+
+titik scaleXDot(titik p0, titik p1, float s){
+    titik output;
+    output.x = p1.x;
+    output.y = p1.y;
+    int jarakx = abs(p1.x - p0.x);
+    if (p1.x < p0.x){
+        output.x = ((int)(((float)p0.x) - ((float)jarakx * s)));
+    }
+    else {
+        output.x = ((int)(((float)p0.x) + ((float)jarakx * s)));
+    }
+
+    
+    
+    
+    return output;
+}
+
+titik scaleYDot(titik p0, titik p1, float s){
+    titik output;
+    output.x = p1.x;
+    output.y = p1.y;
+    int jaraky = abs(p1.y - p0.y);
+    if (p1.y < p0.y){
+        output.y = ((int)(((float)p0.y) - ((float)jaraky * s)));
+    }
+    else {
+        output.y = ((int)(((float)p0.y) + ((float)jaraky * s)));
+    }
+    
+    
+    
+    return output;
+}
