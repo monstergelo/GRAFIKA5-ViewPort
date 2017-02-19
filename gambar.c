@@ -343,6 +343,36 @@ void bufferDrawPlaneSolidCitra(titik *citra, titik pivot, warna c, warna bound_c
   bufferDrawPlaneSolid(posAbs, c, bound_c, sisi);
 }
 
+titik scaleDot(titik p0, titik p1, float s){
+    titik output;
+    output.x = p1.x;
+    output.y = p1.y;
+    int jarakx = abs(p1.x - p0.x);
+    int jaraky = abs(p1.y - p0.y);
+    if (p1.x < p0.x){
+        output.x = ((int)(((float)p0.x) - ((float)jarakx * s)));
+    }
+    else {
+        output.x = ((int)(((float)p0.x) + ((float)jarakx * s)));
+    }
+    if (p1.y < p0.y){
+        output.y = ((int)(((float)p0.y) - ((float)jaraky * s)));
+    }
+    else {
+        output.y = ((int)(((float)p0.y) + ((float)jaraky * s)));
+    }
+    
+    
+    
+    return output;
+}
+
+void scaleBanyakDot(titik p0, titik *p1, float s, int banyaktitik){
+    for (int i = 0; i < banyaktitik;i++){
+        p1[i] = scaleDot(p0, p1[i], s);
+    }
+}
+
 //view-stuff====================================================================
 
 void init_view(titik p, int length_x, int length_y)
@@ -419,12 +449,26 @@ void shift_window(int x, int y)
     window.length_y += y;
 }
 
-void printLines()
+void printLines(int i)
 {
-    for(int ii = 0; ii<5; ii++)
+    for(int ii = 0; ii<i; ii++)
     {
         printf("Line %d: [%d,%d] [%d,%d]\n", 
             ii, worldLines[ii].p0.x, worldLines[ii].p0.y, 
                 worldLines[ii].p1.x, worldLines[ii].p1.y);
     }
 }
+
+void resizeLines(titik p0, float s)
+{
+    for(int i=0; i<lastLine; i++)
+    {
+
+    }
+}
+
+void redrawLines()
+{
+
+}
+

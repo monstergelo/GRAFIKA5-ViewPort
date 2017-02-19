@@ -88,7 +88,22 @@ void init_window(titik p, int length_x, int length_y);
 //menggeser titik origin window
 void shift_window(int x, int y);
 
-void printLines();
+//worldLines-stuff==============================================================
 
+//print WorldLine 0 - i
+void printLines(int i);
 
+//scale garis di WorldLines sebesar s
+void resizeLines(titik p0, float s);
+
+//drawLinebuffer seluruh WorldLines
+void redrawLines();
+
+//menjauhkan jarak p0 dan setiap p1 dengan menggeser 
+//setiap p1 sehingga jarak membesar sebanyak skala
+titik scaleDot(titik p0, titik p1, float s); 
+
+//menjauhkan jarak p0 dan setiap p1 dengan menggeser 
+//setiap p1 sehingga jarak membesar sebanyak skala
+void scaleBanyakDot(titik p0, titik *p1, float s, int banyaktitik); 
 #endif //GAMBAR_H
