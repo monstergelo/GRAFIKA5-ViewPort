@@ -312,6 +312,23 @@ void bufferDrawLine(titik p0, titik p1, warna c) {
       if (e2 >-dx) { err -= dy; x0 += wx; }
       if (e2 < dy) { err += dx; y0 += sy; }
     }
+
+    saveLine(&p0, &p1, c);
+}
+
+void saveLine(titik* p0, titik* p1, warna c)
+{
+    for(int i; i<lastLine; i++)
+    {
+        if((worldLine[i].p0 == p0) && (worldLine[i].p1 == p1))
+        {
+            return;
+        }
+    }
+
+    worldLine[lastLine].p0 = p0;
+    worldLine[lastLine].p1 = p1;
+    worldLine[lastLine].c = c;
 }
 
 void bufferDrawPlaneSolidCitra(titik *citra, titik pivot, warna c, warna bound_c, int sisi) {
