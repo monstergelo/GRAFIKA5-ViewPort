@@ -300,7 +300,7 @@ void drawTank(int xof, int yof) {
 
 void bufferDrawLine(titik p0, titik p1, warna c) {
     int x0 = p0.x; int x1 = p1.x; int y0 = p0.y; int y1 = p1.y;
-    int dx = abs(x1-x0), sx = x0<x1 ? 1 : -1;
+    int dx = abs(x1-x0), wx = x0<x1 ? 1 : -1;
     int dy = abs(y1-y0), sy = y0<y1 ? 1 : -1;
     int err = (dx>dy ? dx : -dy)/2, e2;
 
@@ -309,7 +309,7 @@ void bufferDrawLine(titik p0, titik p1, warna c) {
       bufferDrawDot(temp, c);
       if (x0==x1 && y0==y1) break;
       e2 = err;
-      if (e2 >-dx) { err -= dy; x0 += sx; }
+      if (e2 >-dx) { err -= dy; x0 += wx; }
       if (e2 < dy) { err += dx; y0 += sy; }
     }
 }
@@ -322,4 +322,80 @@ void bufferDrawPlaneSolidCitra(titik *citra, titik pivot, warna c, warna bound_c
     posAbs[i].y = citra[i].y + pivot.y;
   }
   bufferDrawPlaneSolid(posAbs, c, bound_c, sisi);
+}
+
+//view-stuff====================================================================
+
+void init_view(titik p, int length_x, int length_y)
+{
+    view.origin.x = p.x;view.origin.y = p.y;
+    view.length_x = length_x;
+    view.length_y = length_y;
+}
+
+void prepareView()
+{
+    //pindahin semua pixel yang ada di window ke view
+    int wx = window.origin.x; //koordinat x kiri-atas window
+    int wy = window.origin.y; //koordinat x kiri-atas window
+
+    int vx = view.origin.x;
+    int vy = view.origin.y;
+
+    for(int j=0; j<(window.length_y); j++)
+    {
+        for(int i=0; i<(window.length_x); i++)
+        {
+            viewport_r[vx+i][vy+j] = buffer_r[wx+i][wy+j];
+            viewport_g[vx+i][vy+j] = buffer_g[wx+i][wy+j];
+            viewport_b[vx+i][vy+j] = buffer_b[wx+i][wy+j];
+            viewport_a[vx+i][vy+j] = buffer_a[wx+i][wy+j];
+        }
+    }
+
+    //resize view
+
+    //atur view biar pas posisi
+}
+
+void loadView()
+{
+    int i, j;
+
+    titik titik_sementara;
+    warna warna_sementara;
+    warna warna_kosong = {0, 0, 0, 0};
+    for(i = 0; i < GLOBAL_LAYAR_X; i++){
+        for(j = 0; j < GLOBAL_LAYAR_Y; j++){
+            titik_sementara.x = i;
+            titik_sementara.y = j;
+
+            if(viewport_r[i][j] && viewport_g[i][j] &&
+            viewport_b[i][j] && viewport_a[i][j]){
+                warna_sementara.r = viewport_r[i][j];
+                warna_sementara.g = viewport_g[i][j];
+                warna_sementara.b = viewport_b[i][j];
+                warna_sementara.a = viewport_a[i][j];
+            }else{
+                warna_sementara = warna_kosong;
+            }
+
+            DrawDot(titik_sementara, warna_sementara);
+        }
+    }
+}
+
+//window-stuff==================================================================
+
+void init_window(titik p, int length_x, int length_y)
+{
+    window.origin.x = p.x;window.origin.y = p.y;
+    window.length_x = length_x;
+    window.length_y = length_y;
+}
+
+void shift_window(int x, int y)
+{
+    window.length_x += x;
+    window.length_y += y;
 }

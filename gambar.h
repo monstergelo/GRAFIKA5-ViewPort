@@ -7,10 +7,18 @@
 #include "glob_var_type.h"
 
 
-unsigned char buffer_r[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-unsigned char buffer_g[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-unsigned char buffer_b[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-unsigned char buffer_a[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
+unsigned char buffer_r[4000][4000];
+unsigned char buffer_g[4000][4000];
+unsigned char buffer_b[4000][4000];
+unsigned char buffer_a[4000][4000];
+
+unsigned char viewport_r[4000][4000];
+unsigned char viewport_g[4000][4000];
+unsigned char viewport_b[4000][4000];
+unsigned char viewport_a[4000][4000];
+
+selectedBuffer view;
+selectedBuffer window;
 
 //mengembalikan titik dengan nilai x dan y sesuai argumen
 titik setTitik(int x, int y);
@@ -54,5 +62,26 @@ void drawPlane(int xof, int yof);
 void drawTank(int xof, int yof);
 
 titik getMidPoint(titik *citra, int sisi);
+
+//view-stuff====================================================================
+
+//inisialisasi atribut view
+void init_view(titik p, int length_x, int length_y);
+
+//mengkopi buffer ke view sesuai atribut view dan window
+void prepareView();
+
+//me-load view ke layar
+void loadView();
+
+//window-stuff==================================================================
+
+//inisialisasi atribut window
+void init_window(titik p, int length_x, int length_y);
+
+//menggeser titik origin window
+void shift_window(int x, int y);
+
+
 
 #endif //GAMBAR_H

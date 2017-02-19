@@ -13,9 +13,28 @@ typedef struct{
 	int y;
 } titik;
 
-extern unsigned char buffer_r[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-extern unsigned char buffer_g[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-extern unsigned char buffer_b[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
-extern unsigned char buffer_a[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
+typedef struct{
+	titik origin;
+	int length_x;
+	int length_y;
+} selectedBuffer;
+
+extern selectedBuffer view;
+extern selectedBuffer window;
+
+extern unsigned char buffer_r[4000][4000];
+extern unsigned char buffer_g[4000][4000];
+extern unsigned char buffer_b[4000][4000];
+extern unsigned char buffer_a[4000][4000];
+
+extern unsigned char viewport_r[4000][4000];
+extern unsigned char viewport_g[4000][4000];
+extern unsigned char viewport_b[4000][4000];
+extern unsigned char viewport_a[4000][4000];
+
+extern unsigned char window_r[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
+extern unsigned char window_g[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
+extern unsigned char window_b[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
+extern unsigned char window_a[GLOBAL_LAYAR_X][GLOBAL_LAYAR_Y];
 
 #endif //GLOB_VAR_TYPE_H

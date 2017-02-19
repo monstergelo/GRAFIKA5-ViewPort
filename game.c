@@ -49,6 +49,8 @@ int main(){
 
 //**setup-objek-game****************************************************************************
 	init_fb();
+	init_view(pl0, 400, 400);
+	init_window(pl0, 400, 400);
 	warna c = {255,255,255,255};
 	warna c0 = {255,255,255,255};
 	c0.r += 30;
@@ -77,6 +79,9 @@ int main(){
 	bufferDrawLine(p5, p7, c);
 	bufferDrawLine(p1, p8, c);
 	loadBuffer();
+	prepareView();
+	usleep(1500000);
+	loadView();
 
 	printf("wawawa\n");
 	usleep(3000000);
@@ -107,6 +112,9 @@ int main(){
 	bufferDrawLine(bidang[4], bidang[6], c);
 	bufferDrawLine(bidang[0], bidang[7], c);
 	loadBuffer();
+	prepareView();
+	usleep(1500000);
+	loadView();
 
 
 //**game-loop***********************************************************************************
