@@ -17,7 +17,7 @@ titik setTitik(int x, int y){
 
 //mengganti nilai pixel dengan posisi p pada buffer dengan warna c
 void DrawDot(titik p, warna c){
-    if((p.x < 1) || (p.x >= GLOBAL_LAYAR_X) || (p.y < 1) || (p.y >= GLOBAL_LAYAR_Y)){
+    if((p.x < VIEW_X_START) || (p.x >= VIEW_X_END) || (p.y < VIEW_Y_START) || (p.y >= VIEW_Y_END)){
 		return ;
 	}
 
@@ -40,9 +40,9 @@ void DrawDot(titik p, warna c){
 }
 
 void bufferDrawDot(titik p, warna c){
-    if((p.x < 1) || (p.x >= GLOBAL_LAYAR_X) || (p.y < 1) || (p.y >= GLOBAL_LAYAR_Y)){
-		return ;
-	}
+    if((p.x < VIEW_X_START) || (p.x >= VIEW_X_END) || (p.y < VIEW_Y_START) || (p.y >= VIEW_Y_END)){
+      return ;
+  	}
 
     buffer_b[p.x][p.y] = c.b;
     buffer_g[p.x][p.y] = c.g;
@@ -320,7 +320,7 @@ void saveLine(titik p0, titik p1, warna c)
 {
     for(int i; i<lastLine; i++)
     {
-        if((worldLines[i].p0.x == p0.x) && (worldLines[i].p0.y == p0.y) && 
+        if((worldLines[i].p0.x == p0.x) && (worldLines[i].p0.y == p0.y) &&
            (worldLines[i].p1.x == p1.x) && (worldLines[i].p1.y == p1.y))
         {
             return;
@@ -361,9 +361,9 @@ titik scaleDot(titik p0, titik p1, float s){
     else {
         output.y = ((int)(((float)p0.y) + ((float)jaraky * s)));
     }
-    
-    
-    
+
+
+
     return output;
 }
 
@@ -573,8 +573,8 @@ void printLines(int i)
 {
     for(int ii = 0; ii<i; ii++)
     {
-        printf("Line %d: [%d,%d] [%d,%d]\n", 
-            ii, worldLines[ii].p0.x, worldLines[ii].p0.y, 
+        printf("Line %d: [%d,%d] [%d,%d]\n",
+            ii, worldLines[ii].p0.x, worldLines[ii].p0.y,
                 worldLines[ii].p1.x, worldLines[ii].p1.y);
     }
 }
@@ -585,6 +585,16 @@ void resizeLines(titik p0, float s)
     {
         worldLines[i].p0 = scaleDot(p0, worldLines[i].p0, s);
         worldLines[i].p1 = scaleDot(p0, worldLines[i].p1, s);
+    }
+}
+
+void moveLines(float x, float y) {
+    for(int i=0; i<lastLine; i++)
+    {
+        worldLines[i].p0.x += x;
+        worldLines[i].p1.x += x;
+        worldLines[i].p0.y += y;
+        worldLines[i].p1.y += y;
     }
 }
 
@@ -646,9 +656,9 @@ titik scaleXDot(titik p0, titik p1, float s){
         output.x = ((int)(((float)p0.x) + ((float)jarakx * s)));
     }
 
-    
-    
-    
+
+
+
     return output;
 }
 
@@ -663,8 +673,8 @@ titik scaleYDot(titik p0, titik p1, float s){
     else {
         output.y = ((int)(((float)p0.y) + ((float)jaraky * s)));
     }
-    
-    
-    
+
+
+
     return output;
 }

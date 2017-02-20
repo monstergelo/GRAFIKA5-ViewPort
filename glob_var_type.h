@@ -4,6 +4,12 @@
 #define GLOBAL_LAYAR_X 1366
 #define GLOBAL_LAYAR_Y 700
 
+#define VIEW_X_START 200
+#define VIEW_X_END 1166
+
+#define VIEW_Y_START 100
+#define VIEW_Y_END 600
+
 typedef struct{
     int r,g,b,a;
 } warna;

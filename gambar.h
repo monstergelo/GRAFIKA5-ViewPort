@@ -112,22 +112,23 @@ void printLines(int i);
 
 //scale garis di WorldLines sebesar s
 void resizeLines(titik p0, float s);
+void moveLines(float x, float y);
 void resizeLinesX(titik p0, float s);
 void resizeLinesY(titik p0, float s);
 
 //drawLinebuffer seluruh WorldLines
 void redrawLines();
 
-//menjauhkan jarak p0 dan setiap p1 dengan menggeser 
+//menjauhkan jarak p0 dan setiap p1 dengan menggeser
 //setiap p1 sehingga jarak membesar sebanyak skala
-titik scaleDot(titik p0, titik p1, float s); 
+titik scaleDot(titik p0, titik p1, float s);
 
 titik scaleYDot(titik p0, titik p1, float s);
 
 titik scaleXDot(titik p0, titik p1, float s);
 
-//menjauhkan jarak p0 dan setiap p1 dengan menggeser 
+//menjauhkan jarak p0 dan setiap p1 dengan menggeser
 //setiap p1 sehingga jarak membesar sebanyak skala
-void scaleBanyakDot(titik p0, titik *p1, float s, int banyaktitik); 
+void scaleBanyakDot(titik p0, titik *p1, float s, int banyaktitik);
 
 #endif //GAMBAR_H
